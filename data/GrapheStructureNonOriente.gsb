@@ -1,0 +1,20 @@
+Nom: GrapheStructureNonOriente
+Oriente: non
+NbSommets: 5
+NbValSommet: 1
+NbArcs: 7
+NbValArc: 2
+--- Liste des sommets
+000 a 18
+001 b 23
+002 c 55
+003 d 68
+004 e 47
+--- Liste des arcs
+000 001 3 8
+000 002 2 7
+000 003 3 3
+001 003 2 5
+001 004 1 6
+002 003 1 4
+004 003 3 9

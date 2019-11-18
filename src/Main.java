@@ -22,7 +22,8 @@ public class Main {
         System.out.print(lListVertices2.toString());
         
         System.out.println("- KRUSKAL 1 --");
-        Tools.Kruskal(lGraph2);
+        ListEdges lListeEdges1 = Tools.Kruskal(lGraph2);
+        System.out.println(lListeEdges1.toString());
         
         
         

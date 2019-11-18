@@ -110,43 +110,34 @@ public class Tools {
     public static ListEdges Kruskal(Graph pGraph)
     {
     	ListEdges SortList=pGraph.getListEdges();
-    	
+    	ListEdges ListKruskal=new ListEdges();
     	
     	SortList.getList().sort(null);
     	
     	pGraph.getListEdges().RemoveAllEdges();
     	pGraph.getListVertices().ResetDegrees();
-    	
+    	int i=0;
     	int NbVertices = pGraph.getListVertices().getNbVertices();
     	while (pGraph.getListEdges().getList().size() < NbVertices -1)
     	{
-    		Edge courant = SortList.getEdgeAt(i);
-    		//Rajouter un atribut "reseau de sommet" dans sommet 
+
+    		Edge courant = SortList.getEdgeAt(i++);
+
+    		int id1=courant.getIndexInitialVertex();
+    		int id2=courant.getIndexFinalVertex();
+    		if(id1!=id2){
+    		    ListKruskal.addEdge(courant);
+    		    for(Vertex v:pGraph.getListVertices().getList()){
+    		        if(v.getParentId()==id2){
+    		            v.setParentId(id1);
+                    }
+                }
+            }
+            //Rajouter un atribut "reseau de sommet" dans sommet
     		//Tous les sommets d'un même réseau ont la même valeur dans "Réseau de sommet"
     	}
-    	for(int i=0;i< SortList.getNbEdges();i++)
-    	{
-    		Vertex VertexPointe = pGraph.getListVertices().getVertexAt(SortList.getEdgeAt(i).getIndexFinalVertex());//Sommet vers lequel pointe notre arc courant
-    		//if(VertexPointe)>0)//Si il a deja des arcs entrant
-    		{
-    			
-    		}
-    		pGraph.mListEdges.addEdge(SortList.getEdgeAt(i));//J'ajoute mon arête
-    		pGraph.mListVertices.getVertexAt(SortList.getEdgeAt(i).getIndexInitialVertex()).incrementDegree();// Je met a jour le degrée du sommet initial de l'arête
-    		pGraph.mListVertices.getVertexAt(SortList.getEdgeAt(i).getIndexInitialVertex()).incrementDegreePos();// Je met a jour le degrée Positif du sommet Initial de l'arête
-    		pGraph.mListVertices.getVertexAt(SortList.getEdgeAt(i).getIndexFinalVertex()).incrementDegreeNeg();// Je met a jour le degrée Négatif du sommet Final de l'arête
-    		for (int j=0;j<NbVertices;j++)
-    		{
-    			if(pGraph.mListVertices.getVertexAt(j).getDegree()>1) {
-    				
-    			}
-    		}
-    		
-    	}
-    	//Trier la liste
 
-    	//Comment gérer les cycles ?
-		return null;
+        return ListKruskal;
     }
     
     

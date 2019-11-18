@@ -1,4 +1,5 @@
 public class Vertex implements Comparable<Vertex> {
+    static int NEX_ID=0;
     private int mId;				// id of the vertex
     private String mName;			// name of the vertex
     private int mDegree;			// degree of vertex
@@ -7,7 +8,7 @@ public class Vertex implements Comparable<Vertex> {
     private int mColor;        	    // color of vertex
     private int mNbValues;		    // number of values associated to the vertex
     private double mValues[];		// values associated to the vertex
-
+    private int parentId = NEX_ID++;
     public Vertex() {}
 
     /**
@@ -51,7 +52,12 @@ public class Vertex implements Comparable<Vertex> {
     public void setNbValues(int pNbValues) { mNbValues = pNbValues; }
     public double[] getValues() { return mValues; }
     public void setValues(double[] pValues) { mValues = pValues; }
-
+    public int getParentId(){
+        return parentId;
+    }
+    public void setParentId(int id){
+        parentId=id;
+    }
     /**
      * Get the value at position pIndex
      * @param pIndex

@@ -118,10 +118,16 @@ public class Tools {
     	pGraph.getListVertices().ResetDegrees();
     	int i=0;
     	int NbVertices = pGraph.getListVertices().getNbVertices();
+
     	while (pGraph.getListEdges().getList().size() < NbVertices -1)
     	{
 
-    		Edge courant = SortList.getEdgeAt(i++);
+    	    int b=SortList.getNbEdges();
+            if(i<b){
+                i++;
+            }
+
+            Edge courant = SortList.getEdgeAt(i);
 
     		int id1=courant.getIndexInitialVertex();
     		int id2=courant.getIndexFinalVertex();

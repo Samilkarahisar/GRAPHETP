@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class Tools {
 
@@ -109,18 +105,20 @@ public class Tools {
     
     public static ListEdges Kruskal(Graph pGraph)
     {
-    	ListEdges SortList=pGraph.getListEdges();
-    	ListEdges ListKruskal=new ListEdges();
-    	
-    	SortList.getList().sort(null);
-    	
-    	pGraph.getListEdges().RemoveAllEdges();
-    	pGraph.getListVertices().ResetDegrees();
 
+        ListEdges ListKruskal=new ListEdges();
+
+    	Collections.sort(pGraph.getListEdges().getList(), new Comparator<Edge>(){
+            @Override
+            public int compare(Edge e1, Edge e2) {
+                return e1.compareTo(e2);
+            }
+        });
+        int b=pGraph.getNbEdges();
+        ListEdges SortList=pGraph.getListEdges();
     	int NbVertices = pGraph.getListVertices().getNbVertices();
 
-        int b=SortList.getNbEdges();
-    	for (int i=0;i<NbVertices;i++)
+    	for (int i=0;i<b;i++)
     	{
             Edge courant = SortList.getEdgeAt(i);
 

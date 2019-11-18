@@ -120,7 +120,7 @@ public class Tools {
     	int NbVertices = pGraph.getListVertices().getNbVertices();
 
         int b=SortList.getNbEdges();
-    	for (int i=0;i<b;i++)
+    	for (int i=0;i<NbVertices;i++)
     	{
             Edge courant = SortList.getEdgeAt(i);
 

@@ -149,7 +149,7 @@ public class Tools {
         while(dGraph.getListVertices().getList().size()!=0){
 
             dGraph.getListVertices().getVertexAt(i);
-            i++;
+
             int k=0;
             do{
                 k++;
@@ -162,6 +162,8 @@ public class Tools {
                     p=p+1;
                 }
             }while(dGraph.getListAdjacent().get(i).get(k)!=null);
+
+            i++;
         }
         if(p==pGraph.getNbVertices())return false;
         else return true;

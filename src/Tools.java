@@ -138,31 +138,33 @@ public class Tools {
         Graph dGraph= new Graph();
         int p=0;
 
+
         for(Vertex v:pGraph.getListVertices().getList()) {
             if (v.getDegreeNeg()==0){
                 dGraph.getListVertices().addVertex(v);
+                dGraph.getListAdjacent().add(pGraph.getListAdjacent().get(v.getId()));
             p = p + 1;
+                System.out.println("foreach");
             }
         }
 
         int i=0;
         while(dGraph.getListVertices().getList().size()!=0){
 
-            dGraph.getListVertices().getVertexAt(i);
-
             int k=0;
             do{
-                k++;
+
                 int index=dGraph.getListAdjacent().get(i).get(k);
-                Vertex V=new Vertex();
-                V=pGraph.getListVertices().getVertexAt(index);
-                V.setDegreeNeg(V.getDegreeNeg()-1);
-                if(V.getDegreeNeg()==0){
-                    dGraph.getListVertices().addVertex(V);
+                System.out.println("index:"+index);
+                Vertex Successeur=new Vertex();
+                Successeur=pGraph.getListVertices().getVertexAt(index);
+                Successeur.setDegreeNeg(Successeur.getDegreeNeg()-1);
+                if(Successeur.getDegreeNeg()==0){
+                    dGraph.getListVertices().addVertex(Successeur);
                     p=p+1;
                 }
+                k++;
             }while(dGraph.getListAdjacent().get(i).get(k)!=null);
-
             i++;
         }
         if(p==pGraph.getNbVertices())return false;

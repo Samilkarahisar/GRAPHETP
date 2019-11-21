@@ -117,7 +117,7 @@ public class Tools {
         Graph dGraph= new Graph();
         int i =0;
 
-        while(dGraph.getNbVertices()<(pGraph.getNbVertices()-1)){
+        while(dGraph.getListEdges().getNbEdges()<(pGraph.getNbVertices()-1)){
             dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
 
             if(Circuit(dGraph)){
@@ -150,21 +150,29 @@ public class Tools {
 
         int i=0;
         while(dGraph.getListVertices().getList().size()!=0){
-
             int k=0;
             do{
 
-                int index=dGraph.getListAdjacent().get(i).get(k);
-                System.out.println("index:"+index);
+                if(pGraph.getListAdjacent().get(i).size()==0)
+                {
+                    break;
+                }
+                int idArc=pGraph.getListAdjacent().get(i).get(k).intValue();
+                int idSuc=pGraph.getListEdges().getEdgeAt(idArc).getIndexFinalVertex();
+
                 Vertex Successeur=new Vertex();
-                Successeur=pGraph.getListVertices().getVertexAt(index);
+                Successeur=pGraph.getListVertices().getVertexAt(idSuc);
                 Successeur.setDegreeNeg(Successeur.getDegreeNeg()-1);
                 if(Successeur.getDegreeNeg()==0){
                     dGraph.getListVertices().addVertex(Successeur);
+                    dGraph.getListAdjacent().add(pGraph.getListAdjacent().get(Successeur.getId()));
                     p=p+1;
                 }
                 k++;
-            }while(dGraph.getListAdjacent().get(i).get(k)!=null);
+
+            }while(k!=dGraph.getListAdjacent().get(i).size());
+
+            dGraph.getListVertices().getList().remove(0);
             i++;
         }
         if(p==pGraph.getNbVertices())return false;

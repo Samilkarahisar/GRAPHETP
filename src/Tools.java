@@ -106,7 +106,6 @@ public class Tools {
     public static ListEdges Kruskal(Graph pGraph)
     {
 
-        ListEdges ListKruskal=new ListEdges();
 
     	Collections.sort(pGraph.getListEdges().getList(), new Comparator<Edge>(){
             @Override
@@ -114,30 +113,55 @@ public class Tools {
                 return e1.compareTo(e2);
             }
         });
-        int b=pGraph.getNbEdges();
-        ListEdges SortList=pGraph.getListEdges();
-    	int NbVertices = pGraph.getListVertices().getNbVertices();
 
-    	for (int i=0;i<b;i++)
-    	{
-            Edge courant = SortList.getEdgeAt(i);
+        Graph dGraph= new Graph();
+        int i =0;
 
-    		int id1=courant.getIndexInitialVertex();
-    		int id2=courant.getIndexFinalVertex();
-    		if(id1!=id2){
-    		    ListKruskal.addEdge(courant);
-    		    for(Vertex v:pGraph.getListVertices().getList()){
-    		        if(v.getParentId()==id2){
-    		            v.setParentId(id1);
-                    }
-                }
+        while(dGraph.getNbVertices()<(pGraph.getNbVertices()-1)){
+            dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
+
+            if(Circuit(dGraph)){
+                dGraph.getListEdges().getEdgeAt(i).DeleteEdge();
+            }else{
+                dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
             }
-            //Rajouter un atribut "reseau de sommet" dans sommet
-    		//Tous les sommets d'un même réseau ont la même valeur dans "Réseau de sommet"
-    	}
+        }
 
-        return ListKruskal;
+
+        return dGraph.getListEdges();
     }
-    
+
+    public static boolean Circuit(Graph pGraph){
+        Graph dGraph= new Graph();
+        int p=0;
+
+        for(Vertex v:pGraph.getListVertices().getList()) {
+            if (v.getDegreeNeg()==0){
+                dGraph.getListVertices().addVertex(v);
+            p = p + 1;
+            }
+        }
+
+        int i=0;
+        while(dGraph.getListVertices()!=null){
+
+            dGraph.getListVertices().getVertexAt(i);
+            i++;
+            int k=0;
+            do{
+                k++;
+                int index=dGraph.getListAdjacent().get(i).get(k);
+                Vertex V=new Vertex();
+                V=pGraph.getListVertices().getVertexAt(index);
+                V.setDegreeNeg(V.getDegreeNeg()-1);
+                if(V.getDegreeNeg()==0){
+                    dGraph.getListVertices().addVertex(V);
+                    p=p+1;
+                }
+            }while(dGraph.getListAdjacent().get(i).get(k)!=null);
+        }
+        if(p==pGraph.getNbVertices())return false;
+        else return true;
+    }
     
 }

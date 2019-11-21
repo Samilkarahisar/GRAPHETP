@@ -122,9 +122,12 @@ public class Tools {
 
             if(Circuit(dGraph)){
                 dGraph.getListEdges().getEdgeAt(i).DeleteEdge();
+                System.out.println("ok");
             }else{
-                dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
+                //dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
+                System.out.println("ok2");
             }
+            i++;
         }
 
 
@@ -143,7 +146,7 @@ public class Tools {
         }
 
         int i=0;
-        while(dGraph.getListVertices()!=null){
+        while(dGraph.getListVertices().getList().size()!=0){
 
             dGraph.getListVertices().getVertexAt(i);
             i++;

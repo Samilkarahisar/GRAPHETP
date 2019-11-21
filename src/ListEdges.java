@@ -96,9 +96,14 @@ public class ListEdges {
      */
     public void RemoveAllEdges()
     {
-    	for (int i=0;i<this.mList.size();i++)
-    	{
-    		this.mList.remove(i);
-    	}
+        //mList.removeAll(Collection<Edge> c);
+        /*
+        for (Edge e: mList
+
+             ) {
+            mList.remove(e);
+        }
+        */
+
     }
 }

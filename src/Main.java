@@ -20,11 +20,15 @@ public class Main {
         System.out.println("- PARCOURS PROFONDEUR --");
         ListVertices lListVertices2 = Tools.parcoursProfondeur(lGraph2,0);
         System.out.print(lListVertices2.toString());
-        
+        /*
         System.out.println("- KRUSKAL 1 --");
         ListEdges lListeEdges1 = Tools.Kruskal(lGraph2);
         System.out.println(lListeEdges1.toString());
-        
+*/
+        if(Tools.Circuit(lGraph2))
+        {
+            System.out.println("J'ai un circuit");
+        }
         
         
     }

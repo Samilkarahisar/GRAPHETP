@@ -105,8 +105,6 @@ public class Tools {
     
     public static ListEdges Kruskal(Graph pGraph)
     {
-
-
     	Collections.sort(pGraph.getListEdges().getList(), new Comparator<Edge>(){
             @Override
             public int compare(Edge e1, Edge e2) {
@@ -178,5 +176,36 @@ public class Tools {
         if(p==pGraph.getNbVertices())return false;
         else return true;
     }
-    
+
+    public static ListEdges Kruskal2(Graph pGraph)
+    {
+        Collections.sort(pGraph.getListEdges().getList(), new Comparator<Edge>(){
+            @Override
+            public int compare(Edge e1, Edge e2) {
+                return e1.compareTo(e2);
+            }
+        });
+        Collections.sort(pGraph.getListEdges().getList(),Collections.reverseOrder()); //Tri dans l'ordre décroissant
+
+        ListEdges T = pGraph.getListEdges();
+        int i = 0;
+
+        While(T.getNbEdges() >= pGraph.getNbVertices())
+        {
+            if(Connexe(pGraph,i))
+            {
+
+            }
+        }
+    }
+
+    public static boolean Connexe(Graph pGraph,int i){
+        Vertex tamp = pGraph.getListVertices().getList().get(i);
+        pGraph.getListEdges().getList().remove(i);
+        return true;
+        else{
+            pGraph.getListVertices().getList().add(i,tamp);
+            return false;
+        }
+    }
 }

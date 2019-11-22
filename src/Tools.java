@@ -226,6 +226,8 @@ public class Tools {
 
         ListVertices nonR = new ListVertices();
         nonR.setList(pGraph.getListVertices().getList());
+
+        //Ici sa supprime aussi dans pGraph a cause du set avant apparament ...
         nonR.getList().remove(tamp.getId());
 
         int k = tamp.getId();
@@ -257,8 +259,10 @@ public class Tools {
 
             //On ajoute l'arête de poids minimum à T
             T.getList().add(Ltamp.getList().get(0));
-
+            int noeufFinal = Ltamp.getEdgeAt(0).getIndexFinalVertex();
             //On ajoute le noeud final de cette arête à R avec sa liste d'adjacense
+
+            //L'Id du vertex ne correspond pas a son indice dans la liste...
             R.getListVertices().getList().add(pGraph.getListVertices().getVertexAt(Ltamp.getEdgeAt(0).getIndexFinalVertex()));
             R.getListAdjacent().add(pGraph.getListAdjacent().get(Ltamp.getEdgeAt(0).getIndexFinalVertex()));
         }

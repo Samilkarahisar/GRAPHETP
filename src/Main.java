@@ -27,7 +27,11 @@ public class Main {
 
         System.out.println("- KRUSKAL 2 --");
         ListEdges lListeEdges2 = Tools.Kruskal2(lGraph2);
-        //System.out.println(lListeEdges1.toString());
+        System.out.println(lListeEdges1.toString());
+
+        System.out.println("- PRIM --");
+        ListEdges lListeEdges3 = Tools.Prim(lGraph2,0);
+        System.out.println(lListeEdges3.toString());
 
         
     }

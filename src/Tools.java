@@ -190,22 +190,78 @@ public class Tools {
         ListEdges T = pGraph.getListEdges();
         int i = 0;
 
-        While(T.getNbEdges() >= pGraph.getNbVertices())
+        while(T.getNbEdges() >= pGraph.getNbVertices())
         {
-            if(Connexe(pGraph,i))
+            if(EstConnexe(pGraph,i))
             {
-
+                i++;
             }
         }
+        return null;
     }
 
-    public static boolean Connexe(Graph pGraph,int i){
+    public static boolean EstConnexe(Graph pGraph,int i){
         Vertex tamp = pGraph.getListVertices().getList().get(i);
         pGraph.getListEdges().getList().remove(i);
-        return true;
+        pGraph.getListAdjacent().get(i);
+        if(true)//Si il est connexe ==> A voir avec les liste d'adjacense
+        {
+            return true;
+
+        }
         else{
             pGraph.getListVertices().getList().add(i,tamp);
             return false;
         }
+    }
+
+    public static ListEdges Prim(Graph pGraph,int i){
+        Vertex tamp = pGraph.getListVertices().getList().get(i);
+        Graph R = new Graph();
+        R.getListVertices().addVertex(tamp);
+        R.getListAdjacent().add(pGraph.getListAdjacent().get(tamp.getId()));
+        R.getListEdges().setList(pGraph.getListEdges().getList());
+
+        ListEdges T = new ListEdges();
+
+        ListVertices nonR = new ListVertices();
+        nonR.setList(pGraph.getListVertices().getList());
+        nonR.getList().remove(tamp.getId());
+
+        int k = tamp.getId();
+        while(pGraph.getNbVertices() != R.getNbVertices())
+        {
+            ListEdges Ltamp = new ListEdges();
+            int j;
+            for (j=0;j<R.getListAdjacent().size();j++)//j est le noeud que R et pGraph ont en commun
+            {
+                for (int l = 0; l < R.getListAdjacent().get(j).size(); l++)//l est la liste des arc adjacent au noeud j de R
+                {
+                    for (int n = 0; n < nonR.getNbVertices(); n++)//n est la liste des arc adjacent au noeud j de pGraph
+                    {
+                        if (R.getListEdges().getList().get(R.getListAdjacent().get(j).get(l).intValue()).getIndexFinalVertex() == nonR.getList().get(n).getId()) //Si le noeud de Final dans l'arête qui part de R == un des noeuds dans nonR
+                        {
+                            //Je récupère toutes les arêtes qui vont de R à nonR
+                            Ltamp.getList().add(R.getListEdges().getList().get(R.getListAdjacent().get(j).get(l)));
+                        }
+                    }
+
+                }
+            }
+            Collections.sort(Ltamp.getList(), new Comparator<Edge>() {
+                @Override
+                public int compare(Edge e1, Edge e2) {
+                    return e1.compareTo(e2);
+                }
+            });
+
+            //On ajoute l'arête de poids minimum à T
+            T.getList().add(Ltamp.getList().get(0));
+
+            //On ajoute le noeud final de cette arête à R avec sa liste d'adjacense
+            R.getListVertices().getList().add(pGraph.getListVertices().getVertexAt(Ltamp.getEdgeAt(0).getIndexFinalVertex()));
+            R.getListAdjacent().add(pGraph.getListAdjacent().get(Ltamp.getEdgeAt(0).getIndexFinalVertex()));
+        }
+        return T;
     }
 }

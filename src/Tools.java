@@ -135,12 +135,13 @@ public class Tools {
     public static boolean Circuit(Graph pGraph){
         Graph dGraph= new Graph();
         int p=0;
-
         for(Vertex v:pGraph.getListVertices().getList()) {
+
             if (v.getDegreeNeg()==0){
                 dGraph.getListVertices().addVertex(v);
                 dGraph.getListAdjacent().add(pGraph.getListAdjacent().get(v.getId()));
-            p = p + 1;
+
+                p = p + 1;
                 System.out.println("foreach");
             }
         }
@@ -182,6 +183,19 @@ public class Tools {
         Graph dGraph= new Graph();
     //il faut copier les arretes et sommets de pGraph ici
 
+        int x=pGraph.getNbVertices();
+        for(Vertex v:pGraph.getListVertices().getList()) {
+                dGraph.getListVertices().addVertex(v);
+                dGraph.getListAdjacent().add(pGraph.getListAdjacent().get(v.getId()));
+
+        }
+        for(Edge e:pGraph.getListEdges().getList()){
+                dGraph.getListEdges().addEdge(e);
+        }
+
+        dGraph.setNbVertices(pGraph.getNbVertices());
+        dGraph.setNbEdges(pGraph.getNbEdges());
+
         Collections.sort(dGraph.getListEdges().getList(), new Comparator<Edge>(){
             @Override
             public int compare(Edge e1, Edge e2) {
@@ -191,7 +205,7 @@ public class Tools {
         Collections.sort(dGraph.getListEdges().getList(),Collections.reverseOrder()); //Tri dans l'ordre décroissant
 
         int i = 0;
-        while(dGraph.getListEdges().getNbEdges() >= pGraph.getNbVertices())
+        while(dGraph.getNbVertices()> pGraph.getNbVertices())
         {
             if(EstConnexe(dGraph,i))
             {
@@ -205,6 +219,7 @@ public class Tools {
     public static boolean EstConnexe(Graph pGraph,int i){
         int nb=0;
         nb=parcoursProfondeur(pGraph,i).getNbVertices();
+        System.out.println(nb);
         if(pGraph.getNbVertices()==nb)return true;
         else return false;
     }

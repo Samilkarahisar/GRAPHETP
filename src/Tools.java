@@ -136,7 +136,6 @@ public class Tools {
         Graph dGraph= new Graph();
         int p=0;
 
-
         for(Vertex v:pGraph.getListVertices().getList()) {
             if (v.getDegreeNeg()==0){
                 dGraph.getListVertices().addVertex(v);
@@ -177,43 +176,46 @@ public class Tools {
         else return true;
     }
 
-    /*public static ListEdges Kruskal2(Graph pGraph)
+    public static ListEdges Kruskal2(Graph pGraph)
     {
-        Collections.sort(pGraph.getListEdges().getList(), new Comparator<Edge>(){
+
+        Graph dGraph= new Graph();
+    //il faut copier les arretes et sommets de pGraph ici
+
+        Collections.sort(dGraph.getListEdges().getList(), new Comparator<Edge>(){
             @Override
             public int compare(Edge e1, Edge e2) {
                 return e1.compareTo(e2);
             }
         });
-        Collections.sort(pGraph.getListEdges().getList(),Collections.reverseOrder()); //Tri dans l'ordre décroissant
+        Collections.sort(dGraph.getListEdges().getList(),Collections.reverseOrder()); //Tri dans l'ordre décroissant
 
-        ListEdges T = pGraph.getListEdges();
         int i = 0;
-
-        while(T.getNbEdges() >= pGraph.getNbVertices())
+        while(dGraph.getListEdges().getNbEdges() >= pGraph.getNbVertices())
         {
-            if(EstConnexe(pGraph,i))
+            if(EstConnexe(dGraph,i))
             {
-                i++;
+                dGraph.getListEdges().RemoveEdgeAt(i);
             }
+            i++;
         }
-        return null;
-    }*/
+        return dGraph.getListEdges();
+    }
 
-    /*public static boolean EstConnexe(Graph pGraph,int i){
-        Vertex tamp = pGraph.getListVertices().getList().get(i);
-        pGraph.getListEdges().getList().remove(i);
-        pGraph.getListAdjacent().get(i);
-        if(true)//Si il est connexe ==> A voir avec les liste d'adjacense
-        {
-            return true;
+    public static boolean EstConnexe(Graph pGraph,int i){
+        int nb=0;
+        nb=parcoursProfondeur(pGraph,i).getNbVertices();
+        if(pGraph.getNbVertices()==nb)return true;
+        else return false;
+    }
+    //on a deux types de connexe, weakly connected et fortement connexe.
+    //un graphe orienté est connexe si le graphe non orienté est connexe.
 
-        }
-        else{
-            //pGraph.getListVertices().getList().add(i,tamp);
-            return false;
-        }
-    }*/
+    /*
+    Pour un graphe orienté, on parle de connexité si en oubliant l'orientation des arêtes, le graphe est connexe.
+    On parle de forte connexité s'il existe un chemin orienté depuis tout nœud u vers tout nœud v.
+    */
+
 
     public static ListEdges Prim(Graph pGraph,int i){
         Vertex tamp = pGraph.getListVertices().getList().get(i);

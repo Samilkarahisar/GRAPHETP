@@ -45,6 +45,21 @@ public class ListVertices {
     }
 
     /**
+     * @param IdVertex
+     * @return the vertex at index pIndex
+     */
+    public Vertex getVertexById(int IdVertex) {
+        for(int i=0;i<getNbVertices();i++){
+            Vertex tamp= this.getList().get(i);
+            if(tamp.getId()==IdVertex)
+            {
+                return tamp;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @param pVertex
      */
     public void addVertex(Vertex pVertex) {

@@ -177,7 +177,7 @@ public class Tools {
         else return true;
     }
 
-    public static ListEdges Kruskal2(Graph pGraph)
+    /*public static ListEdges Kruskal2(Graph pGraph)
     {
         Collections.sort(pGraph.getListEdges().getList(), new Comparator<Edge>(){
             @Override
@@ -198,9 +198,9 @@ public class Tools {
             }
         }
         return null;
-    }
+    }*/
 
-    public static boolean EstConnexe(Graph pGraph,int i){
+    /*public static boolean EstConnexe(Graph pGraph,int i){
         Vertex tamp = pGraph.getListVertices().getList().get(i);
         pGraph.getListEdges().getList().remove(i);
         pGraph.getListAdjacent().get(i);
@@ -210,10 +210,10 @@ public class Tools {
 
         }
         else{
-            pGraph.getListVertices().getList().add(i,tamp);
+            //pGraph.getListVertices().getList().add(i,tamp);
             return false;
         }
-    }
+    }*/
 
     public static ListEdges Prim(Graph pGraph,int i){
         Vertex tamp = pGraph.getListVertices().getList().get(i);
@@ -231,20 +231,23 @@ public class Tools {
         nonR.getList().remove(tamp.getId());
 
         int k = tamp.getId();
-        while(pGraph.getNbVertices() != R.getNbVertices())
+        while(pGraph.getNbVertices() != R.getListVertices().getList().size())
         {
+            int nbP = pGraph.getNbVertices();
+            int nbR = R.getListVertices().getList().size();
             ListEdges Ltamp = new ListEdges();
             int j;
-            for (j=0;j<R.getListAdjacent().size();j++)//j est le noeud que R et pGraph ont en commun
+            for (j=0;j<R.getListAdjacent().size();j++)//Pour parcourir toutes les arêtes de R
             {
                 for (int l = 0; l < R.getListAdjacent().get(j).size(); l++)//l est la liste des arc adjacent au noeud j de R
                 {
-                    for (int n = 0; n < nonR.getNbVertices(); n++)//n est la liste des arc adjacent au noeud j de pGraph
+                    for (int n = 0; n < nonR.getNbVertices(); n++)//n est la liste des noeuds de nonR
                     {
-                        if (R.getListEdges().getList().get(R.getListAdjacent().get(j).get(l).intValue()).getIndexFinalVertex() == nonR.getList().get(n).getId()) //Si le noeud de Final dans l'arête qui part de R == un des noeuds dans nonR
+                        Edge eTamp= R.getListEdges().getEdgeByID(R.getListAdjacent().get(j).get(l).intValue());
+                        if (R.getListEdges().getEdgeByID(R.getListAdjacent().get(j).get(l).intValue()).getIndexFinalVertex() == nonR.getList().get(n).getId()) //Si le noeud de Final dans l'arête qui part de R == un des noeuds dans nonR
                         {
                             //Je récupère toutes les arêtes qui vont de R à nonR
-                            Ltamp.getList().add(R.getListEdges().getList().get(R.getListAdjacent().get(j).get(l)));
+                            Ltamp.getList().add(eTamp);
                         }
                     }
 
@@ -259,12 +262,22 @@ public class Tools {
 
             //On ajoute l'arête de poids minimum à T
             T.getList().add(Ltamp.getList().get(0));
-            int noeufFinal = Ltamp.getEdgeAt(0).getIndexFinalVertex();
-            //On ajoute le noeud final de cette arête à R avec sa liste d'adjacense
+            int IdNoeudFinal = Ltamp.getEdgeAt(0).getIndexFinalVertex();
 
+            //On ajoute le noeud final de cette arête à R avec sa liste d'adjacense
             //L'Id du vertex ne correspond pas a son indice dans la liste...
-            R.getListVertices().getList().add(pGraph.getListVertices().getVertexAt(Ltamp.getEdgeAt(0).getIndexFinalVertex()));
-            R.getListAdjacent().add(pGraph.getListAdjacent().get(Ltamp.getEdgeAt(0).getIndexFinalVertex()));
+
+            R.getListVertices().getList().add(pGraph.getListVertices().getVertexById(IdNoeudFinal));
+            R.getListAdjacent().add(pGraph.getListAdjacent().get(IdNoeudFinal));
+
+            //Vu qu'on a ajouter dans R, on retire de nonR
+            for(int g=0;g<nonR.getNbVertices();g++)
+            {
+                if(nonR.getList().get(g).getId()==IdNoeudFinal)
+                {
+                    nonR.getList().remove(g);
+                }
+            }
         }
         return T;
     }

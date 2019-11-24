@@ -40,6 +40,17 @@ public class ListEdges {
      */
     public Edge getEdgeAt(int pIndex) { return mList.get(pIndex); }
 
+    public Edge getEdgeByID(int IdEdge){
+        for(int i=0;i<this.getNbEdges();i++)
+        {
+            Edge tamp = this.getList().get(i);
+            if(tamp.getId()==IdEdge)
+            {
+                return tamp;
+            }
+        }
+        return null;
+    }
     /**
      * @param pEdge
      */

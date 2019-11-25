@@ -78,11 +78,12 @@ public class Tools {
         		
         		int nbSuccesseurs= pGraph.getListAdjacent().get(pile.peek().getId()).size();
         		int i=0;
-        		
+
         		while (i<nbSuccesseurs) // Tant que notre noeud courant a des successeurs
         		{
-        			
-        			int idVoisin = pGraph.getListEdges().getEdgeAt(pGraph.getListAdjacent().get(pile.peek().getId()).get(i)).getVoisin(pile.peek().getId());
+
+        			Edge etest=pGraph.getListEdges().getEdgeByID(pGraph.getListAdjacent().get(pile.peek().getId()).get(i));
+        			int idVoisin =etest.getVoisin(pile.peek().getId());
         			
         			if(marquage[idVoisin]== false) // Si ces successeurs n'ont jamais été visité 
         			{
@@ -182,7 +183,7 @@ public class Tools {
         Graph dGraph= new Graph();
     //il faut copier les arretes et sommets de pGraph ici
 
-        int x=pGraph.getNbVertices();
+       // int x=pGraph.getNbVertices();
         for(Vertex v:pGraph.getListVertices().getList()) {
                 dGraph.getListVertices().addVertex(v);
                 dGraph.getListAdjacent().add(pGraph.getListAdjacent().get(v.getId()));
@@ -195,23 +196,44 @@ public class Tools {
         dGraph.setNbVertices(pGraph.getNbVertices());
         dGraph.setNbEdges(pGraph.getNbEdges());
 
-        Collections.sort(dGraph.getListEdges().getList(), new Comparator<Edge>(){
+
+        ListEdges COPIE = dGraph.getListEdges().clone();
+
+        Collections.sort(COPIE.getList(), new Comparator<Edge>(){
             @Override
             public int compare(Edge e1, Edge e2) {
                 return e1.compareTo(e2);
             }
         });
-        Collections.sort(dGraph.getListEdges().getList(),Collections.reverseOrder()); //Tri dans l'ordre décroissant
+        Collections.sort(COPIE.getList(),Collections.reverseOrder()); //Tri dans l'ordre décroissant
 
         int i = 0;
-        while(dGraph.getListEdges().getNbEdges()>= pGraph.getNbVertices())
+        int tamere=dGraph.getListEdges().getNbEdges();
+        while(tamere>= pGraph.getNbVertices())
         {
-            Edge temp=dGraph.getListEdges().getEdgeAt(i);
-            dGraph.getListEdges().RemoveEdgeAt(i);
-            dGraph.getListAdjacent().remove(temp.getIndexInitialVertex());
-            dGraph.getListAdjacent().remove(temp.getIndexFinalVertex());
-            dGraph.getListVertices().getVertexAt(temp.getIndexInitialVertex());
-            dGraph.getListVertices().getVertexAt(temp.getIndexFinalVertex());
+            Edge integrite = new Edge();
+            Edge temp=COPIE.getEdgeAt(i);
+            dGraph.getListEdges().RemoveEdgeAt(temp.getId());
+            dGraph.getListEdges().getList().add(temp.getId(),integrite);
+            tamere--;
+
+            int x=0;
+           do{
+                if (temp.getId() == dGraph.getListAdjacent().get(temp.getIndexInitialVertex()).get(x).intValue()){
+                    dGraph.getListAdjacent().get(temp.getIndexInitialVertex()).remove(x);
+                  break;
+                }
+                x++;
+            }while(x<dGraph.getListAdjacent().get(temp.getIndexInitialVertex()).size());
+
+            int y=0;
+            do{
+                if (temp.getId() == dGraph.getListAdjacent().get(temp.getIndexFinalVertex()).get(y).intValue()){
+                    dGraph.getListAdjacent().get(temp.getIndexFinalVertex()).remove(y);
+                    break;
+                }
+                y++;
+            }while(y<dGraph.getListAdjacent().get(temp.getIndexFinalVertex()).size());
 
             dGraph.setNbEdges(dGraph.getListEdges().getNbEdges());
             dGraph.setNbVertices(dGraph.getListVertices().getNbVertices());

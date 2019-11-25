@@ -18,16 +18,16 @@ public class Main {
         System.out.print(lListVertices1.toString());
         
         System.out.println("- PARCOURS PROFONDEUR --");
-        ListVertices lListVertices2 = Tools.parcoursProfondeur(lGraph2,0);
-        System.out.print(lListVertices2.toString());
+        //ListVertices lListVertices2 = Tools.parcoursProfondeur(lGraph2,0);
+        //System.out.print(lListVertices2.toString());
 
         System.out.println("- KRUSKAL 1 --");
         ListEdges lListeEdges1 = Tools.Kruskal(lGraph2);
         System.out.println(lListeEdges1.toString());
 
         System.out.println("- KRUSKAL 2 --");
-       // ListEdges lListeEdges2 = Tools.Kruskal2(lGraph2);
-       //  System.out.println(lListeEdges2.toString());
+        ListEdges lListeEdges2 = Tools.Kruskal2(lGraph1);
+        System.out.println(lListeEdges2.toString());
 
         System.out.println("- PRIM --");
         ListEdges lListeEdges3 = Tools.Prim(lGraph1,3);

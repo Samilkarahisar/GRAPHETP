@@ -22,6 +22,13 @@ public class Graph {
         if (pFilename.endsWith("gsb")) { readGSBfile(pFilename); }
         else System.exit(0);
     }
+    public Graph(Graph aGraph){
+        setNbEdges(aGraph.getNbEdges());
+        setNbVertices(aGraph.getNbVertices());
+        setListVertices(aGraph.getListVertices());
+        setListEdges(aGraph.getListEdges());
+        setListAdjacent(aGraph.getListAdjacent());
+    }
 
     // Getters and Setters
     public String getName() { return mName; }
@@ -40,7 +47,9 @@ public class Graph {
     public void setListVertices(ListVertices pListVertices) { mListVertices = pListVertices.clone(); }
     public ListEdges getListEdges() { return mListEdges; }
     public void setListEdges(ListEdges pListEdges) { mListEdges = pListEdges.clone(); }
+    public void setListAdjacent(ArrayList pListAdjacent){ mListAdjacent=pListAdjacent; }
     public ArrayList<LinkedList<Integer>> getListAdjacent() { return mListAdjacent; }
+
 
     /**
      * Clear color of vertices
@@ -292,6 +301,7 @@ public class Graph {
         while (lSt.hasMoreTokens()) lV.add(lSt.nextToken());
         return lV ;
     }
+
 
     
 }

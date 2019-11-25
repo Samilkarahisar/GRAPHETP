@@ -209,15 +209,29 @@ public class Tools {
         {
             Edge temp=dGraph.getListEdges().getEdgeAt(i);
             dGraph.getListEdges().RemoveEdgeAt(i);
-            dGraph.setNbEdges(dGraph.getListEdges().getNbEdges());
             dGraph.getListAdjacent().remove(temp.getIndexInitialVertex());
             dGraph.getListAdjacent().remove(temp.getIndexFinalVertex());
             dGraph.getListVertices().getVertexAt(temp.getIndexInitialVertex());
             dGraph.getListVertices().getVertexAt(temp.getIndexFinalVertex());
 
+            dGraph.setNbEdges(dGraph.getListEdges().getNbEdges());
+            dGraph.setNbVertices(dGraph.getListVertices().getNbVertices());
+
             if(!EstConnexe(dGraph,0))
             {
                 dGraph.getListEdges().addEdge(temp);
+
+                /*
+                dGraph.getListAdjacent().add(temp.getIndexInitialVertex());
+                dGraph.getListAdjacent().add(temp.get);
+                dGraph.getListVertices().addVertex(temp.getIndexInitialVertex());
+                dGraph.getListVertices().addVertex(temp.getIndexFinalVertex());
+
+                dGraph.setNbEdges(dGraph.getListEdges().getNbEdges());
+                dGraph.setNbVertices(dGraph.getListVertices().getNbVertices());
+*/
+
+
             }
             i++;
         }

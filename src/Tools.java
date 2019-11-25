@@ -205,11 +205,19 @@ public class Tools {
         Collections.sort(dGraph.getListEdges().getList(),Collections.reverseOrder()); //Tri dans l'ordre décroissant
 
         int i = 0;
-        while(dGraph.getNbVertices()> pGraph.getNbVertices())
+        while(dGraph.getListEdges().getNbEdges()>= pGraph.getNbVertices())
         {
-            if(EstConnexe(dGraph,i))
+            Edge temp=dGraph.getListEdges().getEdgeAt(i);
+            dGraph.getListEdges().RemoveEdgeAt(i);
+            dGraph.setNbEdges(dGraph.getListEdges().getNbEdges());
+            dGraph.getListAdjacent().remove(temp.getIndexInitialVertex());
+            dGraph.getListAdjacent().remove(temp.getIndexFinalVertex());
+            dGraph.getListVertices().getVertexAt(temp.getIndexInitialVertex());
+            dGraph.getListVertices().getVertexAt(temp.getIndexFinalVertex());
+
+            if(!EstConnexe(dGraph,0))
             {
-                dGraph.getListEdges().RemoveEdgeAt(i);
+                dGraph.getListEdges().addEdge(temp);
             }
             i++;
         }

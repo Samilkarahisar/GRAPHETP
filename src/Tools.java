@@ -179,7 +179,6 @@ public class Tools {
 
     public static ListEdges Kruskal2(Graph pGraph)
     {
-
         Graph dGraph= new Graph();
     //il faut copier les arretes et sommets de pGraph ici
 
@@ -262,6 +261,7 @@ public class Tools {
             int nbR = R.getListVertices().getList().size();
             ListEdges Ltamp = new ListEdges();
             int j;
+
             for (j=0;j<R.getListAdjacent().size();j++)//Pour parcourir toutes les arêtes de R
             {
                 for (int l = 0; l < R.getListAdjacent().get(j).size(); l++)//l est la liste des arc adjacent au noeud j de R
@@ -269,11 +269,27 @@ public class Tools {
                     for (int n = 0; n < nonR.getNbVertices(); n++)//n est la liste des noeuds de nonR
                     {
                         Edge eTamp= R.getListEdges().getEdgeByID(R.getListAdjacent().get(j).get(l).intValue());
-                        if (R.getListEdges().getEdgeByID(R.getListAdjacent().get(j).get(l).intValue()).getIndexFinalVertex() == nonR.getList().get(n).getId()) //Si le noeud de Final dans l'arête qui part de R == un des noeuds dans nonR
+                        if(pGraph.mDirected == false)//Si le graph n'est pas orienté
                         {
-                            //Je récupère toutes les arêtes qui vont de R à nonR
-                            Ltamp.getList().add(eTamp);
+                            if(eTamp.getIndexFinalVertex() == nonR.getList().get(n).getId())
+                            {
+                                //Je récupère toutes les arêtes qui vont de R à nonR
+                                Ltamp.getList().add(eTamp);
+                            }else if (eTamp.getIndexInitialVertex() == nonR.getList().get(n).getId())
+                            {
+                                //Je récupère les arêtes qui vont de nonR à R
+                                Ltamp.getList().add(eTamp);
+                            }
+                        }else //Si le graph est orienté je vérifie si le noeud Final est dans nonR
+                        {
+                            if (eTamp.getIndexFinalVertex() == nonR.getList().get(n).getId()) //Si le noeud de Final dans l'arête qui part de R == un des noeuds dans nonR
+                            {
+                                //Je récupère toutes les arêtes qui vont de R à nonR
+                                Ltamp.getList().add(eTamp);
+                            }
                         }
+
+
                     }
 
                 }
@@ -286,19 +302,43 @@ public class Tools {
             });
 
             //On ajoute l'arête de poids minimum à T
-            T.getList().add(Ltamp.getList().get(0));
+            try{
+                T.getList().add(Ltamp.getList().get(0));
+            }catch(Exception e)
+            {
+                System.out.println("ERREUR : ");
+                System.out.println("l'algorithme n'a pas trouvé d'arête pouvant être ajouté à l'arbre.");
+                System.out.println("Il se peut que ce soit du au fait que votre graphe est orienté est que par conséquent, en partant de ce sommet, aucun chemin n'est possible");
+                System.out.println("SOLUTION : ");
+                System.out.println("Essayez de partir d'un autre noeud");
+            }
             int IdNoeudFinal = Ltamp.getEdgeAt(0).getIndexFinalVertex();
+            int IdNoeudInitial = Ltamp.getEdgeAt(0).getIndexInitialVertex();
+
 
             //On ajoute le noeud final de cette arête à R avec sa liste d'adjacense
             //L'Id du vertex ne correspond pas a son indice dans la liste...
 
-            R.getListVertices().getList().add(pGraph.getListVertices().getVertexById(IdNoeudFinal));
-            R.getListAdjacent().add(pGraph.getListAdjacent().get(IdNoeudFinal));
+            Vertex vFinal = pGraph.getListVertices().getVertexById(IdNoeudFinal);
+            Vertex vInitial = pGraph.getListVertices().getVertexById(IdNoeudInitial);
+
+            //Pour un graph non-orienté, parfois c'est le noeud initial qu'on ajoute à R
+            //Si c'est le noeud final qui est dans nonR et qu'on veut ajouter à R
+            if(vFinal != null)
+            {
+                R.getListVertices().getList().add(vFinal);
+                R.getListAdjacent().add(pGraph.getListAdjacent().get(vFinal.getId()));
+            }else //Si c'est le noeud Initial qui est dans nonR et qu'on veut ajotuer à R
+            {
+                R.getListVertices().getList().add(vInitial);
+                R.getListAdjacent().add(pGraph.getListAdjacent().get(vInitial.getId()));
+            }
 
             //Vu qu'on a ajouter dans R, on retire de nonR
             for(int g=0;g<nonR.getNbVertices();g++)
             {
-                if(nonR.getList().get(g).getId()==IdNoeudFinal)
+                int idCourant = nonR.getList().get(g).getId();
+                if(idCourant==IdNoeudFinal || idCourant == IdNoeudInitial)
                 {
                     nonR.getList().remove(g);
                 }

@@ -121,7 +121,7 @@ public class Tools {
         while(dGraph.getListEdges().getNbEdges()<(pGraph.getNbVertices()-1)){
             dGraph.getListEdges().addEdge(COPIE.getEdgeAt(i));
 
-            if(Circuit(dGraph)){
+            if(!Circuit(dGraph)){
                 dGraph.getListEdges().getEdgeAt(i).DeleteEdge();
             }else{
                 //dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
@@ -134,6 +134,7 @@ public class Tools {
 
         for(int z =0 ; z< dGraph.getListEdges().getList().size();z++){
             sum += dGraph.getListEdges().getList().get(z).getValues()[0];
+
         }
         System.out.println("Somme :"+sum);
         return dGraph.getListEdges();

@@ -106,7 +106,9 @@ public class Tools {
     
     public static ListEdges Kruskal(Graph pGraph)
     {
-    	Collections.sort(pGraph.getListEdges().getList(), new Comparator<Edge>(){
+        ListEdges COPIE = pGraph.getListEdges().clone();
+
+    	Collections.sort(COPIE.getList(), new Comparator<Edge>(){
             @Override
             public int compare(Edge e1, Edge e2) {
                 return e1.compareTo(e2);
@@ -117,14 +119,12 @@ public class Tools {
         int i =0;
 
         while(dGraph.getListEdges().getNbEdges()<(pGraph.getNbVertices()-1)){
-            dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
+            dGraph.getListEdges().addEdge(COPIE.getEdgeAt(i));
 
             if(Circuit(dGraph)){
                 dGraph.getListEdges().getEdgeAt(i).DeleteEdge();
-                System.out.println("ok");
             }else{
                 //dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
-                System.out.println("ok2");
             }
             i++;
         }

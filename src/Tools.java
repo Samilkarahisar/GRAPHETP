@@ -129,7 +129,13 @@ public class Tools {
             i++;
         }
 
+        System.out.println(dGraph.getListEdges().getNbEdges());
+        double sum = 0;
 
+        for(int z =0 ; z< dGraph.getListEdges().getList().size();z++){
+            sum += dGraph.getListEdges().getList().get(z).getValues()[0];
+        }
+        System.out.println("Somme :"+sum);
         return dGraph.getListEdges();
     }
 
@@ -256,13 +262,25 @@ public class Tools {
             }
             i++;
         }
+        Iterator<Edge> ed = dGraph.getListEdges().getList().iterator();
+        while( ed.hasNext() ) {
+
+            Edge edg = ed.next();
+
+            if( edg.getId() == 0 ) { // une condition qui indique que l'on doit retirer l'élément
+                ed.remove();
+            }
+
+        }
+
+        System.out.println(dGraph.getListEdges().getNbEdges());
+
         return dGraph.getListEdges();
     }
 
     public static boolean EstConnexe(Graph pGraph,int i){
         int nb=0;
         nb=parcoursProfondeur(pGraph,i).getNbVertices();
-        System.out.println(nb);
         if(pGraph.getNbVertices()==nb)return true;
         else return false;
     }
@@ -284,13 +302,13 @@ public class Tools {
 
         ListEdges T = new ListEdges();
 
-        ListVertices nonR = new ListVertices();
-        nonR.setList(pGraph.getListVertices().getList());
+        ListVertices nonR = pGraph.getListVertices().clone();
 
         //Ici sa supprime aussi dans pGraph a cause du set avant apparament ...
         nonR.getList().remove(tamp.getId());
 
-        int k = tamp.getId();
+
+        //int k = tamp.getId();
         while(pGraph.getNbVertices() != R.getListVertices().getList().size())
         {
             int nbP = pGraph.getNbVertices();
@@ -311,7 +329,8 @@ public class Tools {
                             {
                                 //Je récupère toutes les arêtes qui vont de R à nonR
                                 Ltamp.getList().add(eTamp);
-                            }else if (eTamp.getIndexInitialVertex() == nonR.getList().get(n).getId())
+                            }
+                            if (eTamp.getIndexInitialVertex() == nonR.getList().get(n).getId())
                             {
                                 //Je récupère les arêtes qui vont de nonR à R
                                 Ltamp.getList().add(eTamp);
@@ -353,33 +372,36 @@ public class Tools {
 
 
             //On ajoute le noeud final de cette arête à R avec sa liste d'adjacense
-            //L'Id du vertex ne correspond pas a son indice dans la liste...
-
             Vertex vFinal = pGraph.getListVertices().getVertexById(IdNoeudFinal);
             Vertex vInitial = pGraph.getListVertices().getVertexById(IdNoeudInitial);
 
-            //Pour un graph non-orienté, parfois c'est le noeud initial qu'on ajoute à R
-            //Si c'est le noeud final qui est dans nonR et qu'on veut ajouter à R
-            if(vFinal != null)
-            {
-                R.getListVertices().getList().add(vFinal);
-                R.getListAdjacent().add(pGraph.getListAdjacent().get(vFinal.getId()));
-            }else //Si c'est le noeud Initial qui est dans nonR et qu'on veut ajotuer à R
-            {
-                R.getListVertices().getList().add(vInitial);
-                R.getListAdjacent().add(pGraph.getListAdjacent().get(vInitial.getId()));
-            }
 
             //Vu qu'on a ajouter dans R, on retire de nonR
             for(int g=0;g<nonR.getNbVertices();g++)
             {
                 int idCourant = nonR.getList().get(g).getId();
-                if(idCourant==IdNoeudFinal || idCourant == IdNoeudInitial)
+                if(idCourant == IdNoeudFinal)//Si c'est le noeud Final qui est dans nonR
                 {
+                    R.getListVertices().getList().add(vFinal);
+                    R.getListAdjacent().add(pGraph.getListAdjacent().get(vFinal.getId()));
+                    nonR.getList().remove(g);
+                }
+                if(idCourant==IdNoeudInitial)//Si c'est le noeud Initial qui est dans nonR
+                {
+                    R.getListVertices().getList().add(vInitial);
+                    R.getListAdjacent().add(pGraph.getListAdjacent().get(vInitial.getId()));
                     nonR.getList().remove(g);
                 }
             }
         }
+
+
+        System.out.println(T.getNbEdges());
+        int sum=0;
+        for(int z =0 ; z< T.getList().size();z++){
+            sum += T.getList().get(z).getValues()[0];
+        }
+        System.out.println("Somme Prim :"+sum);
         return T;
     }
 }

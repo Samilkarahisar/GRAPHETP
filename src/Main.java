@@ -25,15 +25,15 @@ public class Main {
         System.out.print(lListVertices2.toString());
 
         System.out.println("- KRUSKAL 1 --");
-        ListEdges lListeEdges1 = Tools.Kruskal1(lGraph2);
-        System.out.println(lListeEdges1.toString());
-
+        //ListEdges lListeEdges1 = Tools.Kruskal1(lGraph1);
+       // System.out.println(lListeEdges1.toString());
+/*
         System.out.println("- KRUSKAL 2 --");
         ListEdges lListeEdges2 = Tools.Kruskal2(lGraph1);
         System.out.println(lListeEdges2.toString());
-
+*/
         System.out.println("- PRIM --");
-        ListEdges lListeEdges3 = Tools.Prim(lGraph22,0);
+        ListEdges lListeEdges3 = Tools.DCMSTKruskal(lGraph1,1);
         System.out.println(lListeEdges3.toString());
 
         

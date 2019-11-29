@@ -103,6 +103,8 @@ public class Tools {
         return lListVertices;
     }
 
+
+
     public static ListEdges Kruskal1(Graph pGraph)
     {
         ArrayList<ArrayList<Integer>> Ensembles = CreerEnsemble(pGraph);
@@ -387,5 +389,68 @@ public class Tools {
         }
         System.out.println("Somme Prim :"+sum);
         return T;
+    }
+
+    public static ListEdges DCMSTKruskal(Graph pGraph,int degmax){
+
+
+        List<ArrayList<Integer>> Test = new ArrayList<ArrayList<Integer>>();
+
+
+            ArrayList<ArrayList<Integer>> Ensembles = CreerEnsemble(pGraph);
+
+        ListEdges Croissant = pGraph.getListEdges().clone();
+
+        Collections.sort(Croissant.getList(), new Comparator<Edge>(){
+            @Override
+            public int compare(Edge e1, Edge e2) {
+                return e1.compareTo(e2);
+            }
+        });
+
+
+        for(Vertex v:pGraph.getListVertices().getList()) {
+            try {
+                Test.get(v.getId());
+            } catch ( IndexOutOfBoundsException e ) {
+                ArrayList<Integer> g = new ArrayList<Integer>();
+                g.add(1);
+                Test.add(v.getId() , g);
+            }
+        }
+
+
+        ListEdges T = new ListEdges();
+        for(int i = 0 ;i<Croissant.getList().size();i++)
+        {
+            int ab=Croissant.getList().get(i).getIndexInitialVertex();
+
+            int c=Test.get(ab).size();
+            int ty=Croissant.getList().get(i).getIndexFinalVertex();
+            int d=Test.get(ty).size();
+            int o=9;
+            if((c-1)==degmax||(d-1)==degmax){
+                continue;
+            }else {
+
+                int IdEnsInitial = Find(Croissant.getList().get(i).getIndexInitialVertex(), Ensembles);
+                int IdEnsFinal = Find(Croissant.getList().get(i).getIndexFinalVertex(), Ensembles);
+                if (IdEnsInitial != IdEnsFinal) {
+                    T.addEdge(Croissant.getList().get(i));
+                    Test.get(ab).add(Croissant.getList().get(i).getId());
+                    Test.get(ty).add(Croissant.getList().get(i).getId());
+
+                    Union(IdEnsInitial, IdEnsFinal, Ensembles);
+                }
+            }
+        }
+        System.out.println(T.getNbEdges());
+        int sum=0;
+        for(int z =0 ; z< T.getList().size();z++){
+            sum += T.getList().get(z).getValues()[0];
+        }
+        System.out.println("Somme Kruskal1 :"+sum);
+        return T;
+
     }
 }

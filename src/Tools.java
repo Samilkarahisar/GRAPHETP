@@ -102,88 +102,74 @@ public class Tools {
         }
         return lListVertices;
     }
-    
-    
-    public static ListEdges Kruskal(Graph pGraph)
-    {
-        ListEdges COPIE = pGraph.getListEdges().clone();
 
-    	Collections.sort(COPIE.getList(), new Comparator<Edge>(){
+    public static ListEdges Kruskal1(Graph pGraph)
+    {
+        ArrayList<ArrayList<Integer>> Ensembles = CreerEnsemble(pGraph);
+
+
+        ListEdges Croissant = pGraph.getListEdges().clone();
+
+        Collections.sort(Croissant.getList(), new Comparator<Edge>(){
             @Override
             public int compare(Edge e1, Edge e2) {
                 return e1.compareTo(e2);
             }
         });
 
-        Graph dGraph= new Graph();
-        int i =0;
-
-        while(dGraph.getListEdges().getNbEdges()<(pGraph.getNbVertices()-1)){
-            dGraph.getListEdges().addEdge(COPIE.getEdgeAt(i));
-
-            if(!Circuit(dGraph)){
-                dGraph.getListEdges().getEdgeAt(i).DeleteEdge();
-            }else{
-                //dGraph.getListEdges().addEdge(pGraph.getListEdges().getEdgeAt(i));
-            }
-            i++;
-        }
-
-        System.out.println(dGraph.getListEdges().getNbEdges());
-        double sum = 0;
-
-        for(int z =0 ; z< dGraph.getListEdges().getList().size();z++){
-            sum += dGraph.getListEdges().getList().get(z).getValues()[0];
-
-        }
-        System.out.println("Somme :"+sum);
-        return dGraph.getListEdges();
-    }
-
-    public static boolean Circuit(Graph pGraph){
-        Graph dGraph= new Graph();
-        int p=0;
-        for(Vertex v:pGraph.getListVertices().getList()) {
-
-            if (v.getDegreeNeg()==0){
-                dGraph.getListVertices().addVertex(v);
-                dGraph.getListAdjacent().add(pGraph.getListAdjacent().get(v.getId()));
-
-                p = p + 1;
-                System.out.println("foreach");
+        ListEdges T = new ListEdges();
+        for(int i = 0 ;i<Croissant.getList().size();i++)
+        {
+            int IdEnsInitial = Find(Croissant.getList().get(i).getIndexInitialVertex(),Ensembles);
+            int IdEnsFinal = Find(Croissant.getList().get(i).getIndexFinalVertex(),Ensembles);
+            if( IdEnsInitial != IdEnsFinal)
+            {
+                T.addEdge(Croissant.getList().get(i));
+                Union(IdEnsInitial,IdEnsFinal,Ensembles);
             }
         }
-
-        int i=0;
-        while(dGraph.getListVertices().getList().size()!=0){
-            int k=0;
-            do{
-
-                if(pGraph.getListAdjacent().get(i).size()==0)
-                {
-                    break;
-                }
-                int idArc=pGraph.getListAdjacent().get(i).get(k).intValue();
-                int idSuc=pGraph.getListEdges().getEdgeAt(idArc).getIndexFinalVertex();
-
-                Vertex Successeur=new Vertex();
-                Successeur=pGraph.getListVertices().getVertexAt(idSuc);
-                Successeur.setDegreeNeg(Successeur.getDegreeNeg()-1);
-                if(Successeur.getDegreeNeg()==0){
-                    dGraph.getListVertices().addVertex(Successeur);
-                    dGraph.getListAdjacent().add(pGraph.getListAdjacent().get(Successeur.getId()));
-                    p=p+1;
-                }
-                k++;
-
-            }while(k!=dGraph.getListAdjacent().get(i).size());
-
-            dGraph.getListVertices().getList().remove(0);
-            i++;
+        System.out.println(T.getNbEdges());
+        int sum=0;
+        for(int z =0 ; z< T.getList().size();z++){
+            sum += T.getList().get(z).getValues()[0];
         }
-        if(p==pGraph.getNbVertices())return false;
-        else return true;
+        System.out.println("Somme Kruskal1 :"+sum);
+        return T;
     }
+
+    private static ArrayList<ArrayList<Integer>>CreerEnsemble(Graph pGraph)
+    {
+        ArrayList<ArrayList<Integer>> EnsVertex = new ArrayList<ArrayList<Integer>>();
+        for(Vertex ve:pGraph.getListVertices().getList())
+        {
+            ArrayList<Integer> Ltamp = new ArrayList<Integer>();
+            Ltamp.add(ve.getId());
+            EnsVertex.add(Ltamp);
+        }
+        return EnsVertex;
+    }
+
+    public static int Find(int IndexVertex,ArrayList<ArrayList<Integer>> Ens)
+    {
+        for(ArrayList<Integer> A:Ens)
+        {
+            if(A.contains(IndexVertex))
+            {
+                return Ens.indexOf(A);
+            }
+        }
+        return -1;
+    }
+
+    public static void Union(int Id1,int Id2, ArrayList<ArrayList<Integer>> Ens)
+    {
+        for(int i=0;i<Ens.get(Id2).size();i++)
+        {
+            Ens.get(Id1).add(Ens.get(Id2).get(i));
+        }
+        Ens.remove(Id2);
+    }
+
 
     public static ListEdges Kruskal2(Graph pGraph)
     {

@@ -182,13 +182,13 @@ public class Tools {
                 dGraph.getListAdjacent().add(pGraph.getListAdjacent().get(v.getId()));
 
         }
+
         for(Edge e:pGraph.getListEdges().getList()){
                 dGraph.getListEdges().addEdge(e);
         }
 
         dGraph.setNbVertices(pGraph.getNbVertices());
         dGraph.setNbEdges(pGraph.getNbEdges());
-
 
         ListEdges COPIE = dGraph.getListEdges().clone();
 
@@ -201,67 +201,64 @@ public class Tools {
         Collections.sort(COPIE.getList(),Collections.reverseOrder()); //Tri dans l'ordre décroissant
 
         int i = 0;
-        int tamere=dGraph.getListEdges().getNbEdges();
-        while(tamere>= pGraph.getNbVertices())
+
+        while(dGraph.getListEdges().getNbEdges()> pGraph.getNbVertices())//On s'arrête quand on a plus que n-1 arêtes
         {
+            int nbEdgesd = dGraph.getListEdges().getNbEdges();
+            int nbVertexp = pGraph.getNbVertices();
             Edge integrite = new Edge();
-            Edge temp=COPIE.getEdgeAt(i);
-            dGraph.getListEdges().RemoveEdgeAt(temp.getId());
-            dGraph.getListEdges().getList().add(temp.getId(),integrite);
-            tamere--;
+            Edge eTamp=COPIE.getEdgeAt(i);
+            dGraph.getListEdges().RemoveEdgeAt(eTamp.getId());
+           // dGraph.getListEdges().getList().add(eTamp.getId(),integrite);
+            dGraph.setNbEdges(dGraph.getNbEdges()-1);
 
             int x=0;
            do{
-                if (temp.getId() == dGraph.getListAdjacent().get(temp.getIndexInitialVertex()).get(x).intValue()){
-                    dGraph.getListAdjacent().get(temp.getIndexInitialVertex()).remove(x);
+                if (eTamp.getId() == dGraph.getListAdjacent().get(eTamp.getIndexInitialVertex()).get(x).intValue()){
+                    dGraph.getListAdjacent().get(eTamp.getIndexInitialVertex()).remove(x);
                   break;
                 }
                 x++;
-            }while(x<dGraph.getListAdjacent().get(temp.getIndexInitialVertex()).size());
+            }while(x<dGraph.getListAdjacent().get(eTamp.getIndexInitialVertex()).size());
 
             int y=0;
             do{
-                if (temp.getId() == dGraph.getListAdjacent().get(temp.getIndexFinalVertex()).get(y).intValue()){
-                    dGraph.getListAdjacent().get(temp.getIndexFinalVertex()).remove(y);
+                if (eTamp.getId() == dGraph.getListAdjacent().get(eTamp.getIndexFinalVertex()).get(y).intValue()){
+                    dGraph.getListAdjacent().get(eTamp.getIndexFinalVertex()).remove(y);
                     break;
                 }
                 y++;
-            }while(y<dGraph.getListAdjacent().get(temp.getIndexFinalVertex()).size());
+            }while(y<dGraph.getListAdjacent().get(eTamp.getIndexFinalVertex()).size());
 
             dGraph.setNbEdges(dGraph.getListEdges().getNbEdges());
             dGraph.setNbVertices(dGraph.getListVertices().getNbVertices());
 
-            if(!EstConnexe(dGraph,0))
+            if(!EstConnexe(dGraph,0))//Si le graphe sans l'arête n'est plus connexe
             {
-                dGraph.getListEdges().addEdge(temp);
-
-                /*
-                dGraph.getListAdjacent().add(temp.getIndexInitialVertex());
-                dGraph.getListAdjacent().add(temp.get);
-                dGraph.getListVertices().addVertex(temp.getIndexInitialVertex());
-                dGraph.getListVertices().addVertex(temp.getIndexFinalVertex());
-
-                dGraph.setNbEdges(dGraph.getListEdges().getNbEdges());
-                dGraph.setNbVertices(dGraph.getListVertices().getNbVertices());
-*/
-
-
+                dGraph.getListEdges().addEdge(eTamp);
             }
             i++;
         }
+
+
+        //Pour enlever les nulls
         Iterator<Edge> ed = dGraph.getListEdges().getList().iterator();
-        while( ed.hasNext() ) {
+        /*while( ed.hasNext() ) {
 
             Edge edg = ed.next();
 
             if( edg.getId() == 0 ) { // une condition qui indique que l'on doit retirer l'élément
                 ed.remove();
             }
-
-        }
+        }*/
 
         System.out.println(dGraph.getListEdges().getNbEdges());
 
+        int sum=0;
+        for(int z =0 ; z< dGraph.getListEdges().getList().size();z++){
+            sum += dGraph.getListEdges().getList().get(z).getValues()[0];
+        }
+        System.out.println("Somme Kruskal2 :"+sum);
         return dGraph.getListEdges();
     }
 

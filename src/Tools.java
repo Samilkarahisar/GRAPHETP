@@ -431,6 +431,7 @@ public class Tools {
 
         ListVertices nonR = pGraph.getListVertices().clone();
 
+        ListVertices ArbreVertices = new ListVertices();
 
         //Ici sa supprime aussi dans pGraph a cause du set avant apparament ...
         nonR.getList().remove(tamp.getId());
@@ -482,6 +483,17 @@ public class Tools {
                 }
             });
 
+
+
+            int IdNoeudFinal = Ltamp.getEdgeAt(0).getIndexFinalVertex();
+            int IdNoeudInitial = Ltamp.getEdgeAt(0).getIndexInitialVertex();
+
+
+            //On ajoute le noeud final de cette arête à R avec sa liste d'adjacense
+            Vertex vFinal = pGraph.getListVertices().getVertexById(IdNoeudFinal);
+            Vertex vInitial = pGraph.getListVertices().getVertexById(IdNoeudInitial);
+
+
             //On ajoute l'arête de poids minimum à T
             try{
                 boolean ignore=false;
@@ -502,6 +514,14 @@ public class Tools {
                 }
                 // Ltamp.getList().get(0).getIndexInitialVertex();
                 if(!ignore) {
+                    if(!ArbreVertices.getList().contains(vFinal)){
+                        ArbreVertices.addVertex(vFinal);
+                    }
+
+                    if(!ArbreVertices.getList().contains(vInitial)){
+                        ArbreVertices.addVertex(vInitial);
+                    }
+
                     T.getList().add(Ltamp.getList().get(0));
                 }
 
@@ -513,14 +533,6 @@ public class Tools {
                 System.out.println("SOLUTION : ");
                 System.out.println("Essayez de partir d'un autre noeud");
             }
-            int IdNoeudFinal = Ltamp.getEdgeAt(0).getIndexFinalVertex();
-            int IdNoeudInitial = Ltamp.getEdgeAt(0).getIndexInitialVertex();
-
-
-            //On ajoute le noeud final de cette arête à R avec sa liste d'adjacense
-            Vertex vFinal = pGraph.getListVertices().getVertexById(IdNoeudFinal);
-            Vertex vInitial = pGraph.getListVertices().getVertexById(IdNoeudInitial);
-
 
             //Vu qu'on a ajouter dans R, on retire de nonR
             for(int g=0;g<nonR.getNbVertices();g++)
@@ -541,12 +553,26 @@ public class Tools {
             }
         }
 
-
         ArrayList<Edge> Y;
         Y=R.getListEdges().getList();
         Y.removeAll(T.getList());
 
+        Collections.sort(Y, new Comparator<Edge>() {
+            @Override
+            public int compare(Edge e1, Edge e2) {
+                return e1.compareTo(e2);
+            }
+        });
 
+        for(Edge Restant: Y){
+
+        if((ArbreVertices.getList().contains(pGraph.getListVertices().getVertexById(Restant.getIndexInitialVertex()))==false||ArbreVertices.getList().contains(pGraph.getListVertices().getVertexById(Restant.getIndexFinalVertex()))==false)){
+            //si la source de l'arret qui manque n'est pas dans l'arbre
+            T.getList().add(Restant);
+        }
+
+
+        }
         System.out.println(T.getNbEdges());
         int sum=0;
         for(int z =0 ; z< T.getList().size();z++){

@@ -19,15 +19,16 @@ public class Main {
 
        // ListVertices lListVertices2 = Tools.parcoursProfondeur(lGraph1,0);
         //System.out.print(lListVertices2.toString());
+        /*
         System.out.println("- KRUSKAL 1 --");
         ListEdges lListeEdges1 = Tools.Kruskal1(lGraph22);
         System.out.println(lListeEdges1.toString());
         System.out.println("- KRUSKAL 2 --");
          ListEdges lListeEdges2 = Tools.Kruskal2(lGraph22);
         System.out.println(lListeEdges2.toString());
-
+*/
         System.out.println("- PRIM --");
-        ListEdges lListeEdges3 = Tools.DCMST(lGraph2,3    );
+        ListEdges lListeEdges3 = Tools.DCMST(lGraph2,2);
         System.out.println(lListeEdges3.toString());
 
         

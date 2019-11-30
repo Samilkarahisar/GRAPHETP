@@ -1,0 +1,17 @@
+Nom: Graphe
+Oriente: non
+NbSommets: 4
+NbValSommet: 1
+NbArcs: 5
+NbValArc: 2
+--- Liste des sommets
+000 a 18
+001 b 23
+002 c 55
+003 d 68
+--- Liste des arcs
+000 001 1 0
+000 002 3 0
+000 003 4 0
+001 002 2 0
+002 003 5 0

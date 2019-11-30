@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ListEdges {
     private ArrayList<Edge> mList;   // list of edges
@@ -21,6 +23,44 @@ public class ListEdges {
     public ListEdges(ArrayList<Edge> pList, double pValue) {
         mList = pList;
         mValue = pValue;
+    }
+
+    public void sort()
+    {
+        Collections.sort(mList, new Comparator<Edge>() {
+            @Override
+            public int compare(Edge e1, Edge e2) {
+                return e1.compareTo(e2);
+            }
+        });
+        ArrayList<Edge> edgeListCopy = new ArrayList<Edge>();
+        for(int i=0; i<mList.size(); i++)
+        {
+            edgeListCopy.add(mList.get(mList.size()-i-1));
+        }
+        mList=edgeListCopy;
+    }
+
+    @Override
+    public ListEdges clone() {
+        ListEdges lCloneList = new ListEdges();
+
+        for (int i = 0; i < this.mList.size(); i++) {
+            lCloneList.mList.add(this.getEdgeAt(i).clone());
+        }
+        lCloneList.mValue = this.mValue;
+        return lCloneList;
+    }
+
+
+    public double getPoids()
+    {
+        double somme=0;
+        for(int i=0; i<this.getNbEdges(); i++)
+        {
+            somme+=this.getEdgeAt(i).getValueAt(0);
+        }
+        return somme;
     }
 
     // Getters and Setters
@@ -56,19 +96,7 @@ public class ListEdges {
      */
     public void addEdge(Edge pEdge) { mList.add(pEdge); }
 
-    /**
-     * Clone the list
-     */
-    @Override
-    public ListEdges clone() {
-        ListEdges lCloneList = new ListEdges();
 
-        for (int i = 0; i < this.mList.size(); i++) {
-            lCloneList.mList.add(this.getEdgeAt(i));
-        }
-        lCloneList.mValue = this.mValue;
-        return lCloneList;
-    }
 
     /**
      * Display the list of edges

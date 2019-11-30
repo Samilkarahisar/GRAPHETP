@@ -154,6 +154,30 @@ public class Graph {
         lBuffer.close();
     }
 
+
+    public void refresh()
+    {
+        mNbEdges=mListEdges.getNbEdges();
+        for (int i=0; i<mNbEdges; i++)
+        {
+            mListEdges.getEdgeAt(i).setId(i);
+        }
+
+        mListAdjacent= new ArrayList<LinkedList<Integer>>();
+        for(int i=0; i< mNbVertices; i++)
+        {
+            LinkedList<Integer> lVectin = new LinkedList<Integer>();
+            for(int j=0; j<mNbEdges; j++)
+            {
+                if(mListEdges.getEdgeAt(j).getIndexInitialVertex()==i)
+                {
+                    lVectin.add(j);
+                }
+            }
+            mListAdjacent.add(i, lVectin);
+        }
+    }
+
     /**
      * Create a GSB graph
      * @return Chaine de caracteres contenant le graph GSB

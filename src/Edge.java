@@ -45,6 +45,19 @@ public class Edge implements Comparable<Edge> {
     public double[] getValues() { return mValues; }
     public void setValues(double[] pValues) { mValues = pValues; }
 
+    public Edge clone()
+    {
+        Edge edgeToReturn = new Edge(mId,
+                mIndexInitialVertex,
+                mIndexFinalVertex,
+                mNameInitialVertex,
+                mNameFinalVertex,
+                mNbValues,
+                mValues);
+
+        return edgeToReturn;
+    }
+
     /**
      * Get the value at position pIndex
      * @param pIndex

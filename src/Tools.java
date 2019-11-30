@@ -81,20 +81,28 @@ public class Tools {
 
         		while (i<nbSuccesseurs) // Tant que notre noeud courant a des successeurs
         		{
-
+                    //On prend dans la liste d'adjacense une arête qu'on a supprimé
         			Edge etest=pGraph.getListEdges().getEdgeByID(pGraph.getListAdjacent().get(pile.peek().getId()).get(i));
-        			int idVoisin =etest.getVoisin(pile.peek().getId());
-        			
-        			if(marquage[idVoisin]== false) // Si ces successeurs n'ont jamais été visité 
-        			{
-        				marquage[idVoisin] = true;
-        				pile.push(pGraph.getListVertices().getList().get(idVoisin));//On met les successeur dans la pile 
-        				i = 0;
-        			}
-        			
-        			// Si le successeur est déjà marqué, on incrémente juste 
-        			else { i++;} 
-        			nbSuccesseurs = pGraph.getListAdjacent().get(pile.peek().getId()).size(); // On met a jour le nombre de successeur avec le nouveau noeud au sommet de la pile 	
+
+        			if(etest != null)//Si il y a bien un successeur qui existe
+                    {
+                        int idVoisin =etest.getVoisin(pile.peek().getId());
+
+                        if(marquage[idVoisin]== false) // Si ces successeurs n'ont jamais été visité
+                        {
+                            marquage[idVoisin] = true;
+                            pile.push(pGraph.getListVertices().getList().get(idVoisin));//On met les successeur dans la pile
+                            i = 0;
+                        }else {
+                            nbSuccesseurs = pGraph.getListAdjacent().get(pile.peek().getId()).size(); // On met a jour le nombre de successeur avec le nouveau noeud au sommet de la pile
+
+                            i++;// Si le successeur est déjà marqué, on incrémente juste
+                        }
+                    }else
+                    {
+                        nbSuccesseurs = pGraph.getListAdjacent().get(pile.peek().getId()).size(); // On met a jour le nombre de successeur avec le nouveau noeud au sommet de la pile
+                        i++;
+                    }
         		}
         	}
         	lListVertices.addVertex(pile.peek());

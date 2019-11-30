@@ -1,3 +1,4 @@
+import javax.sound.midi.Track;
 import java.util.*;
 
 public class Tools {
@@ -497,31 +498,27 @@ public class Tools {
             //On ajoute l'arête de poids minimum à T
             try{
                 boolean ignore=false;
-                if(TrackerArray[Ltamp.getList().get(0).getIndexInitialVertex()]==null){
-                    TrackerArray[Ltamp.getList().get(0).getIndexInitialVertex()]=1;
-                }else{
-                    TrackerArray[Ltamp.getList().get(0).getIndexInitialVertex()]=(TrackerArray[Ltamp.getList().get(0).getIndexInitialVertex()])+1;
+                if(TrackerArray[IdNoeudFinal]==null){
+                    TrackerArray[IdNoeudFinal]=0;
                 }
-
-                if(TrackerArray[Ltamp.getList().get(0).getIndexFinalVertex()]==null){
-                    TrackerArray[Ltamp.getList().get(0).getIndexFinalVertex()]=1;
-                }else{
-                    TrackerArray[Ltamp.getList().get(0).getIndexFinalVertex()]=(TrackerArray[Ltamp.getList().get(0).getIndexFinalVertex()])+1;
+                if(TrackerArray[IdNoeudInitial]==null){
+                    TrackerArray[IdNoeudInitial]=0;
                 }
-
-                if(TrackerArray[Ltamp.getList().get(0).getIndexFinalVertex()]>degmax||TrackerArray[Ltamp.getList().get(0).getIndexInitialVertex()]>degmax){
+                if(TrackerArray[Ltamp.getList().get(0).getIndexFinalVertex()]>=degmax||TrackerArray[Ltamp.getList().get(0).getIndexInitialVertex()]>=degmax){
                     ignore=true;
                 }
-                // Ltamp.getList().get(0).getIndexInitialVertex();
-                if(!ignore) {
-                    if(!ArbreVertices.getList().contains(vFinal)){
+                if(ignore==false) {
+                    if(ArbreVertices.getList().contains(vFinal)==false){
                         ArbreVertices.addVertex(vFinal);
                     }
 
-                    if(!ArbreVertices.getList().contains(vInitial)){
+                    if(ArbreVertices.getList().contains(vInitial)==false){
                         ArbreVertices.addVertex(vInitial);
+
                     }
 
+                    TrackerArray[IdNoeudInitial]=(TrackerArray[IdNoeudInitial])+1;
+                    TrackerArray[IdNoeudFinal]=(TrackerArray[IdNoeudFinal])+1;
                     T.getList().add(Ltamp.getList().get(0));
                 }
 
@@ -563,11 +560,13 @@ public class Tools {
                 return e1.compareTo(e2);
             }
         });
-
         for(Edge Restant: Y){
 
         if((ArbreVertices.getList().contains(pGraph.getListVertices().getVertexById(Restant.getIndexInitialVertex()))==false||ArbreVertices.getList().contains(pGraph.getListVertices().getVertexById(Restant.getIndexFinalVertex()))==false)){
             //si la source de l'arret qui manque n'est pas dans l'arbre
+            if(TrackerArray[Restant.getIndexInitialVertex()]>=degmax){
+                continue;
+            }
             T.getList().add(Restant);
         }
 

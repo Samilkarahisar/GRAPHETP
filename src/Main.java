@@ -28,6 +28,8 @@ public class Main {
         System.out.println(lListeEdges2.toString());
 */
         System.out.println("- PRIM --");
+
+
         ListEdges lListeEdges3 = Tools.DCMST(lGraph22,2);
         System.out.println(lListeEdges3.toString());
 

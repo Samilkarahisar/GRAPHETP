@@ -560,18 +560,42 @@ public class Tools {
                 return e1.compareTo(e2);
             }
         });
-        for(Edge Restant: Y){
 
-        if((ArbreVertices.getList().contains(pGraph.getListVertices().getVertexById(Restant.getIndexInitialVertex()))==false||ArbreVertices.getList().contains(pGraph.getListVertices().getVertexById(Restant.getIndexFinalVertex()))==false)){
-            //si la source de l'arret qui manque n'est pas dans l'arbre
-            if(TrackerArray[Restant.getIndexInitialVertex()]>=degmax){
-                continue;
+        for(Edge Restant: Y) {
+
+            if ((ArbreVertices.getList().contains(pGraph.getListVertices().getVertexById(Restant.getIndexInitialVertex())) == false || ArbreVertices.getList().contains(pGraph.getListVertices().getVertexById(Restant.getIndexFinalVertex())) == false)) {
+                //si la source de l'arret qui manque n'est pas dans l'arbre
+                if (TrackerArray[Restant.getIndexInitialVertex()] >= degmax || TrackerArray[Restant.getIndexFinalVertex()] >= degmax) {
+                    continue;
+                }
+                T.getList().add(Restant);
+            } else if ((T.getNbEdges() != (pGraph.getNbVertices() - 1)) && (TrackerArray[Restant.getIndexInitialVertex()] < degmax && TrackerArray[Restant.getIndexFinalVertex()] < degmax)) {
+                //On tombe ici, pour les aretes dont les deux sommets ont déja été ajouté aux sous graphes.
+                //il y'a deux cas:
+                //Cas 1: ajouter l'arete rend le graphe connexe
+                //Cas 2: ajouter est inutile car les deux sommets font partie du meme sous graphe connexe.
+
+                /*
+                Graph U = new Graph();
+                U.setListVertices(pGraph.getListVertices());
+                U.setNbVertices(pGraph.getNbVertices());
+
+                T.getList().add(Restant);
+
+                U.setListEdges(T);
+                U.setNbEdges(T.getList().size());
+                U.refresh();
+                if (isConnexe(U) == false) {
+                    U.getListEdges().getList().remove(Restant);
+                }
+
+                T = U.getListEdges();
+
+                 */
+
             }
-            T.getList().add(Restant);
         }
 
-
-        }
         System.out.println(T.getNbEdges());
         int sum=0;
         for(int z =0 ; z< T.getList().size();z++){

@@ -277,25 +277,25 @@ public class Graph {
         lResult.append(lNewLine);
         lResult.append("Liste des sommets :");
         lResult.append(lNewLine);
-        for (int i = 0; i < mNbVertices; i++) {
+        /*for (int i = 0; i < mNbVertices; i++) {
             lVertex = (Vertex) mListVertices.getVertexAt(i);
             lResult.append(lVertex.toString());
-        }
+        }*/
         lResult.append("---");
         lResult.append(lNewLine);
         if (this.isDirected()) lResult.append("Liste des arcs :");
         else lResult.append("Liste des aretes :");
         lResult.append(lNewLine);
-        for (int i = 0; i < mNbEdges; i++) {
+        /*for (int i = 0; i < mNbEdges; i++) {
             lEdge = (Edge) mListEdges.getEdgeAt(i);
             lResult.append(lEdge.toString());
-        }
+        }*/
         lResult.append("---");
         lResult.append(lNewLine);
         if (this.isDirected()) lResult.append("Liste d'adjacence (sommet - liste sommets (num arcs)) :");
         else lResult.append("Liste d'adjacence (sommet - liste sommets (num aretes)) :");
         lResult.append(lNewLine);
-        for (int i = 0; i < mNbVertices; i++) {
+        /*for (int i = 0; i < mNbVertices; i++) {
             lResult.append(mListVertices.getVertexAt(i).getName()+" -");
             lIt = lListIt.get(i);
             while (lIt.hasNext()) {
@@ -306,7 +306,7 @@ public class Graph {
                 else lResult.append(" " + lEdge.getNameInitialVertex() + "(" + lNumEdge + ")");
             }
             lResult.append(lNewLine);
-        }
+        }*/
         lResult.append("---------------- GRAPH -");
         lResult.append(lNewLine);
         return lResult.toString();

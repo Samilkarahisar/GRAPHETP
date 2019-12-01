@@ -13,58 +13,49 @@ public class Tools {
      * @param pStartVertex
      * @return liste des sommets dans l'ordre de traitement
      */
-    public static ListVertices parcoursProfondeur(Graph pGraph, int pStartVertex) 
+    public static ListVertices parcoursProfondeur(Graph pGraph, int pStartVertex)
     {
         ListVertices lListVertices = new ListVertices();
-        Boolean marquage[]=new Boolean[pGraph.getNbVertices()];		
+        Boolean marquage[]=new Boolean[pGraph.getNbVertices()];
         Stack <Vertex>pile=new Stack<Vertex>();
-        
+
         for (int i=0; i<pGraph.getNbVertices() ;i++) //Je marque tous les sommets à faux
         {
-        	marquage[i]=false;
+            marquage[i]=false;
         }
-        
-        marquage[pStartVertex]=true; // Je marque le premier sommet à true 
-        pile.push(pGraph.getListVertices().getVertexAt(pStartVertex)); // Je met le premier sommet dans la pile 
-        
+
+        marquage[pStartVertex]=true; // Je marque le premier sommet à true
+        pile.push(pGraph.getListVertices().getVertexAt(pStartVertex)); // Je met le premier sommet dans la pile
+
         while(!pile.isEmpty())
         {
-        	Vertex pCurrentVertex=pile.peek();
-        	
-        	if(pGraph.getListAdjacent().get(pile.peek().getId()).size() >0 )//Si notre sommet en haut de pile a des adjacents
-        	{
-        		
-        		int nbSuccesseurs= pGraph.getListAdjacent().get(pile.peek().getId()).size();
-        		int i=0;
+            Vertex pCurrentVertex=pile.peek();
 
-        		while (i<nbSuccesseurs) // Tant que notre noeud courant a des successeurs
-        		{
-                    //On prend dans la liste d'adjacense une arête qu'on a supprimé
-        			Edge etest=pGraph.getListEdges().getEdgeByID(pGraph.getListAdjacent().get(pile.peek().getId()).get(i));
+            if(pGraph.getListAdjacent().get(pile.peek().getId()).size() >0 )//Si notre sommet en haut de pile a des adjacents
+            {
 
-        			if(etest != null)//Si il y a bien un successeur qui existe
+                int nbSuccesseurs= pGraph.getListAdjacent().get(pile.peek().getId()).size();
+                int i=0;
+
+                while (i<nbSuccesseurs) // Tant que notre noeud courant a des successeurs
+                {
+
+                    int idVoisin = pGraph.getListEdges().getEdgeAt(pGraph.getListAdjacent().get(pile.peek().getId()).get(i)).getVoisin(pile.peek().getId());
+
+                    if(marquage[idVoisin]== false) // Si ces successeurs n'ont jamais été visité
                     {
-                        int idVoisin =etest.getVoisin(pile.peek().getId());
-
-                        if(marquage[idVoisin]== false) // Si ces successeurs n'ont jamais été visité
-                        {
-                            marquage[idVoisin] = true;
-                            pile.push(pGraph.getListVertices().getList().get(idVoisin));//On met les successeur dans la pile
-                            i = 0;
-                        }else {
-                            nbSuccesseurs = pGraph.getListAdjacent().get(pile.peek().getId()).size(); // On met a jour le nombre de successeur avec le nouveau noeud au sommet de la pile
-
-                            i++;// Si le successeur est déjà marqué, on incrémente juste
-                        }
-                    }else
-                    {
-                        nbSuccesseurs = pGraph.getListAdjacent().get(pile.peek().getId()).size(); // On met a jour le nombre de successeur avec le nouveau noeud au sommet de la pile
-                        i++;
+                        marquage[idVoisin] = true;
+                        pile.push(pGraph.getListVertices().getList().get(idVoisin));//On met les successeur dans la pile
+                        i = 0;
                     }
-        		}
-        	}
-        	lListVertices.addVertex(pile.peek());
-        	pile.pop();
+
+                    // Si le successeur est déjà marqué, on incrémente juste
+                    else { i++;}
+                    nbSuccesseurs = pGraph.getListAdjacent().get(pile.peek().getId()).size(); // On met a jour le nombre de successeur avec le nouveau noeud au sommet de la pile
+                }
+            }
+            lListVertices.addVertex(pile.peek());
+            pile.pop();
         }
         return lListVertices;
     }
@@ -73,6 +64,8 @@ public class Tools {
 
     public static ListEdges Kruskal1(Graph pGraph)
     {
+        long tpsDebut = System.nanoTime();
+        System.out.println(tpsDebut);
         ArrayList<ArrayList<Integer>> Ensembles = CreerEnsemble(pGraph);
 
 
@@ -102,6 +95,13 @@ public class Tools {
             sum += T.getList().get(z).getValues()[0];
         }
         System.out.println("Somme Kruskal1 :"+sum);
+
+        long tpsFin = System.nanoTime();
+        System.out.println(tpsFin);
+        long tpsTotal = tpsFin-tpsDebut;
+        System.out.println("Temps d'execution :" + tpsTotal + "ns");
+        System.out.println("Temps d'execution :" + tpsTotal/1000000 + "ms");
+
         return T;
     }
 
@@ -177,6 +177,7 @@ public class Tools {
 
     public static ListEdges Kruskal2(Graph pGraph)
     {
+        long tpsDebut = System.nanoTime();
         ListEdges listEdgestri = pGraph.getListEdges().clone();
         listEdgestri.sort();
         int i=0;
@@ -215,8 +216,13 @@ public class Tools {
         for(int z =0 ; z< listEdgestri.getList().size();z++){
             sum += listEdgestri.getList().get(z).getValues()[0];
         }
-        System.out.println("Somme Prim :"+sum);
+        System.out.println("Somme Kruskal2 :"+sum);
 
+        long tpsFin = System.nanoTime();
+        System.out.println(tpsFin);
+        long tpsTotal = tpsFin-tpsDebut;
+        System.out.println("Temps d'execution :" + tpsTotal + "ns");
+        System.out.println("Temps d'execution :" + tpsTotal/1000000 + "ms");
         return listEdgestri;
     }
 
@@ -236,6 +242,7 @@ public class Tools {
 
     public static ListEdges Prim(Graph pGraph,int i){
 
+        long tpsDebut = System.nanoTime();
         Vertex tamp = pGraph.getListVertices().getList().get(0);
         Graph R = new Graph();
 
@@ -344,6 +351,13 @@ public class Tools {
             sum += T.getList().get(z).getValues()[0];
         }
         System.out.println("Somme Prim :"+sum);
+
+
+        long tpsFin = System.nanoTime();
+        System.out.println(tpsFin);
+        long tpsTotal = tpsFin-tpsDebut;
+        System.out.println("Temps d'execution :" + tpsTotal + "ns");
+        System.out.println("Temps d'execution :" + tpsTotal/1000000 + "ms");
         return T;
     }
     public static ListEdges DCMSTKruskal(Graph pGraph,int degmax){
